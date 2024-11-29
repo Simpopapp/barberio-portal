@@ -5,7 +5,7 @@ import {
   Clock,
   MapPin,
   Wifi,
-  Parking,
+  ParkingCircle,
   Accessibility,
   CreditCard,
   Instagram,
@@ -51,7 +51,7 @@ const businessHours = [
 
 const amenities = [
   { icon: Wifi, label: "Wi-Fi" },
-  { icon: Parking, label: "Estacionamento" },
+  { icon: ParkingCircle, label: "Estacionamento" },
   { icon: Accessibility, label: "Acessibilidade" },
   { icon: CreditCard, label: "Cartão aceito" },
 ];
