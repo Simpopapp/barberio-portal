@@ -84,6 +84,41 @@ export type Database = {
         }
         Relationships: []
       }
+      available_slots: {
+        Row: {
+          created_at: string
+          end_time: string
+          id: string
+          is_available: boolean | null
+          service_id: string | null
+          start_time: string
+        }
+        Insert: {
+          created_at?: string
+          end_time: string
+          id?: string
+          is_available?: boolean | null
+          service_id?: string | null
+          start_time: string
+        }
+        Update: {
+          created_at?: string
+          end_time?: string
+          id?: string
+          is_available?: boolean | null
+          service_id?: string | null
+          start_time?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "available_slots_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       business_hours: {
         Row: {
           close_time: string
@@ -152,6 +187,7 @@ export type Database = {
       }
       services: {
         Row: {
+          active: boolean | null
           created_at: string
           description: string | null
           duration: unknown
@@ -160,6 +196,7 @@ export type Database = {
           price: number
         }
         Insert: {
+          active?: boolean | null
           created_at?: string
           description?: string | null
           duration: unknown
@@ -168,6 +205,7 @@ export type Database = {
           price: number
         }
         Update: {
+          active?: boolean | null
           created_at?: string
           description?: string | null
           duration?: unknown
