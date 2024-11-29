@@ -18,14 +18,6 @@ import {
   MessageSquare,
 } from "lucide-react";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
   Carousel,
   CarouselContent,
   CarouselItem,
@@ -33,6 +25,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Link } from "react-router-dom";
+import { AppointmentDialog } from "@/components/scheduling/AppointmentDialog";
 
 const services = [
   {
@@ -90,6 +83,21 @@ const paymentMethods = [
 ];
 
 const Index = () => {
+  const [selectedService, setSelectedService] = useState<{
+    id: string;
+    name: string;
+    price: number;
+    duration: string;
+  } | null>(null);
+
+  const handleSchedule = (service: typeof services[0]) => {
+    setSelectedService(service);
+  };
+
+  const handleCloseDialog = () => {
+    setSelectedService(null);
+  };
+
   const images = [
     "/lovable-uploads/4615e36b-7752-4181-8a3d-4464ce5271d1.png",
     "/placeholder.svg",
@@ -98,7 +106,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-barber">
-      {/* Header */}
       <header className="sticky top-0 z-50 border-b border-barber-muted/20 bg-barber/95 backdrop-blur">
         <div className="container py-4 flex items-center justify-between">
           <div className="flex items-center gap-8">
@@ -137,7 +144,6 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Hero Section with Carousel */}
       <section className="relative">
         <Carousel className="w-full max-w-5xl mx-auto">
           <CarouselContent>
@@ -158,7 +164,6 @@ const Index = () => {
         </Carousel>
       </section>
 
-      {/* Brief Description */}
       <section className="container py-8">
         <Card className="p-6 bg-secondary/50">
           <p className="text-lg text-center">
@@ -168,7 +173,6 @@ const Index = () => {
         </Card>
       </section>
 
-      {/* Amenities */}
       <section className="container py-8">
         <h2 className="text-xl font-semibold mb-4">Comodidades</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -198,7 +202,9 @@ const Index = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-medium">{service.name}</h3>
-                  <p className="text-sm text-barber-muted mb-2">{service.description}</p>
+                  <p className="text-sm text-barber-muted mb-2">
+                    {service.description}
+                  </p>
                   <p className="text-sm text-barber-muted">
                     <Clock className="h-4 w-4 inline mr-1" />
                     Duração: {service.duration}
@@ -208,22 +214,13 @@ const Index = () => {
                   <span className="text-barber-accent font-semibold">
                     {service.price}
                   </span>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button size="sm" className="bg-barber-accent">
-                        Agendar
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Agendar {service.name}</DialogTitle>
-                        <DialogDescription>
-                          Escolha a data e horário para seu agendamento
-                        </DialogDescription>
-                      </DialogHeader>
-                      {/* Calendar and time selection will be added here */}
-                    </DialogContent>
-                  </Dialog>
+                  <Button
+                    size="sm"
+                    className="bg-barber-accent"
+                    onClick={() => handleSchedule(service)}
+                  >
+                    Agendar
+                  </Button>
                 </div>
               </div>
             </Card>
@@ -231,7 +228,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Business Hours & Contact */}
       <section className="container py-8 grid md:grid-cols-2 gap-8">
         <div>
           <h2 className="text-xl font-semibold mb-4">Horário de atendimento</h2>
@@ -339,7 +335,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="border-t border-barber-muted/20 mt-8">
         <div className="container py-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
@@ -366,6 +361,14 @@ const Index = () => {
           </div>
         </div>
       </footer>
+
+      {selectedService && (
+        <AppointmentDialog
+          isOpen={true}
+          onClose={handleCloseDialog}
+          service={selectedService}
+        />
+      )}
     </div>
   );
 };
