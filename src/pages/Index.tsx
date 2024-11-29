@@ -38,6 +38,16 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ServiceCard } from "@/components/scheduling/ServiceCard";
 
+interface Service {
+  id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  duration: string;
+  active: boolean;
+  created_at: string;
+}
+
 const businessHours = [
   { day: "Segunda-Feira", hours: "08:00 - 19:00" },
   { day: "Terça-Feira", hours: "08:00 - 19:00" },
@@ -63,12 +73,7 @@ const paymentMethods = [
 ];
 
 const Index = () => {
-  const [selectedService, setSelectedService] = useState<{
-    id: string;
-    name: string;
-    price: number;
-    duration: string;
-  } | null>(null);
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
 
   const { data: services = [], isLoading: isLoadingServices } = useQuery({
     queryKey: ["services"],
@@ -79,14 +84,14 @@ const Index = () => {
         .eq("active", true);
 
       if (error) throw error;
-      return data.map(service => ({
+      return (data as Service[]).map(service => ({
         ...service,
-        duration: service.duration.replace(/\s*minutes?\s*/i, " min")
+        duration: String(service.duration).replace(/\s*minutes?\s*/i, " min")
       }));
     },
   });
 
-  const handleSchedule = (service: typeof services[0]) => {
+  const handleSchedule = (service: Service) => {
     setSelectedService(service);
   };
 
