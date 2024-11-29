@@ -34,37 +34,9 @@ import {
 } from "@/components/ui/carousel";
 import { Link } from "react-router-dom";
 import { AppointmentDialog } from "@/components/scheduling/AppointmentDialog";
-
-const services = [
-  {
-    id: "123e4567-e89b-12d3-a456-426614174001",
-    name: "SOBRANCELHA",
-    description: "Design e alinhamento de sobrancelhas",
-    price: 15,
-    duration: "15 min",
-  },
-  {
-    id: "123e4567-e89b-12d3-a456-426614174002",
-    name: "BARBA (BARBOTERAPIA)",
-    description: "Feito com toalha quente e produtos especiais",
-    price: 35,
-    duration: "30 min",
-  },
-  {
-    id: "123e4567-e89b-12d3-a456-426614174003",
-    name: "BARBA E PEZINHO",
-    description: "Barba completa com acabamento no pescoço",
-    price: 45,
-    duration: "45 min",
-  },
-  {
-    id: "123e4567-e89b-12d3-a456-426614174004",
-    name: "CORTE",
-    description: "Corte masculino na tesoura ou máquina",
-    price: 35,
-    duration: "30 min",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { ServiceCard } from "@/components/scheduling/ServiceCard";
 
 const businessHours = [
   { day: "Segunda-Feira", hours: "08:00 - 19:00" },
@@ -97,6 +69,22 @@ const Index = () => {
     price: number;
     duration: string;
   } | null>(null);
+
+  const { data: services = [], isLoading: isLoadingServices } = useQuery({
+    queryKey: ["services"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("services")
+        .select("*")
+        .eq("active", true);
+
+      if (error) throw error;
+      return data.map(service => ({
+        ...service,
+        duration: service.duration.replace(/\s*minutes?\s*/i, " min")
+      }));
+    },
+  });
 
   const handleSchedule = (service: typeof services[0]) => {
     setSelectedService(service);
@@ -205,37 +193,23 @@ const Index = () => {
       <section className="container py-8">
         <h2 className="text-xl font-semibold mb-4">Serviços</h2>
         <div className="grid gap-4">
-          {services.map((service) => (
-            <Card key={service.id} className="p-4 bg-secondary/50">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-medium">{service.name}</h3>
-                  <p className="text-sm text-barber-muted mb-2">
-                    {service.description}
-                  </p>
-                  <p className="text-sm text-barber-muted">
-                    <Clock className="h-4 w-4 inline mr-1" />
-                    Duração: {service.duration}
-                  </p>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-barber-accent font-semibold">
-                    {new Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(service.price)}
-                  </span>
-                  <Button
-                    size="sm"
-                    className="bg-barber-accent"
-                    onClick={() => handleSchedule(service)}
-                  >
-                    Agendar
-                  </Button>
-                </div>
+          {isLoadingServices ? (
+            <Card className="p-4 bg-secondary/50">
+              <div className="flex items-center justify-center">
+                <span className="text-sm text-muted-foreground">
+                  Carregando serviços...
+                </span>
               </div>
             </Card>
-          ))}
+          ) : (
+            services.map((service) => (
+              <ServiceCard
+                key={service.id}
+                service={service}
+                onSchedule={handleSchedule}
+              />
+            ))
+          )}
         </div>
       </section>
 
