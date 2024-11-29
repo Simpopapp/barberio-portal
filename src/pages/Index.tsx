@@ -18,6 +18,14 @@ import {
   MessageSquare,
 } from "lucide-react";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   Carousel,
   CarouselContent,
   CarouselItem,
@@ -29,31 +37,31 @@ import { AppointmentDialog } from "@/components/scheduling/AppointmentDialog";
 
 const services = [
   {
-    id: 1,
+    id: "1",
     name: "SOBRANCELHA",
     description: "Design e alinhamento de sobrancelhas",
-    price: "R$ 15,00",
+    price: 15,
     duration: "15 min",
   },
   {
-    id: 2,
+    id: "2",
     name: "BARBA (BARBOTERAPIA)",
     description: "Feito com toalha quente e produtos especiais",
-    price: "R$ 35,00",
+    price: 35,
     duration: "30 min",
   },
   {
-    id: 3,
+    id: "3",
     name: "BARBA E PEZINHO",
     description: "Barba completa com acabamento no pescoço",
-    price: "R$ 45,00",
+    price: 45,
     duration: "45 min",
   },
   {
-    id: 4,
+    id: "4",
     name: "CORTE",
     description: "Corte masculino na tesoura ou máquina",
-    price: "R$ 35,00",
+    price: 35,
     duration: "30 min",
   },
 ];
@@ -212,7 +220,10 @@ const Index = () => {
                 </div>
                 <div className="flex items-center gap-4">
                   <span className="text-barber-accent font-semibold">
-                    {service.price}
+                    {new Intl.NumberFormat("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    }).format(service.price)}
                   </span>
                   <Button
                     size="sm"

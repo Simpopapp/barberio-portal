@@ -59,14 +59,17 @@ export function AppointmentDialog({
       const slot = availableSlots.find((s) => s.id === slotId);
       if (!slot) throw new Error("Horário não encontrado");
 
+      // Get the current user
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Usuário não autenticado");
+
       const { data: appointment, error: appointmentError } = await supabase
         .from("appointments")
-        .insert([
-          {
-            service_id: service.id,
-            appointment_date: slot.start_time,
-          },
-        ])
+        .insert({
+          service_id: service.id,
+          appointment_date: slot.start_time,
+          user_id: user.id,
+        })
         .select()
         .single();
 
