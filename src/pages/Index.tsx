@@ -37,28 +37,28 @@ import { AppointmentDialog } from "@/components/scheduling/AppointmentDialog";
 
 const services = [
   {
-    id: "1",
+    id: "123e4567-e89b-12d3-a456-426614174001",
     name: "SOBRANCELHA",
     description: "Design e alinhamento de sobrancelhas",
     price: 15,
     duration: "15 min",
   },
   {
-    id: "2",
+    id: "123e4567-e89b-12d3-a456-426614174002",
     name: "BARBA (BARBOTERAPIA)",
     description: "Feito com toalha quente e produtos especiais",
     price: 35,
     duration: "30 min",
   },
   {
-    id: "3",
+    id: "123e4567-e89b-12d3-a456-426614174003",
     name: "BARBA E PEZINHO",
     description: "Barba completa com acabamento no pescoço",
     price: 45,
     duration: "45 min",
   },
   {
-    id: "4",
+    id: "123e4567-e89b-12d3-a456-426614174004",
     name: "CORTE",
     description: "Corte masculino na tesoura ou máquina",
     price: 35,

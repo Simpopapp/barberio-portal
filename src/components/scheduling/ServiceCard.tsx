@@ -4,10 +4,10 @@ import { Clock } from "lucide-react";
 
 interface ServiceCardProps {
   service: {
-    id: string;
+    id: string;  // Updated type to string for UUID
     name: string;
     description: string;
-    price: string;
+    price: number;
     duration: string;
   };
   onSchedule: (service: ServiceCardProps["service"]) => void;
@@ -26,7 +26,12 @@ export function ServiceCard({ service, onSchedule }: ServiceCardProps) {
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-barber-accent font-semibold">{service.price}</span>
+          <span className="text-barber-accent font-semibold">
+            {new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(service.price)}
+          </span>
           <Button
             size="sm"
             className="bg-barber-accent"
