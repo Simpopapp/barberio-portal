@@ -13,9 +13,9 @@ import {
   Search,
   Calendar,
   Menu,
-  Cash,
+  Banknote,
   CreditCard as CardIcon,
-  WhatsApp,
+  MessageSquare,
 } from "lucide-react";
 import {
   Dialog,
@@ -83,7 +83,7 @@ const amenities = [
 ];
 
 const paymentMethods = [
-  { icon: Cash, label: "Dinheiro" },
+  { icon: Banknote, label: "Dinheiro" },
   { icon: CardIcon, label: "Cartão de Crédito" },
   { icon: CardIcon, label: "Cartão de Débito" },
   { icon: CreditCard, label: "PIX" },
@@ -323,7 +323,7 @@ const Index = () => {
                     window.open("https://wa.me/5511999999999", "_blank")
                   }
                 >
-                  <WhatsApp className="h-4 w-4" />
+                  <MessageSquare className="h-4 w-4" />
                 </Button>
                 <Button
                   variant="outline"
