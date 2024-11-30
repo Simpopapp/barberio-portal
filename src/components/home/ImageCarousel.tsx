@@ -8,8 +8,8 @@ import {
 
 const images = [
   "/lovable-uploads/985f07d5-e3fe-4aee-8a16-c79bc695ba2c.png",
-  "/placeholder.svg",
-  "/placeholder.svg",
+  "/lovable-uploads/691fb0c2-90b7-4deb-9475-09c43ede8edb.png",
+  "/lovable-uploads/d49cdc8c-e31e-4269-89a4-5930461bcdcb.png",
 ];
 
 export function ImageCarousel() {
