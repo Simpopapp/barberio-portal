@@ -1,42 +1,24 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import {
-  Clock,
   MapPin,
+  Instagram,
+  Phone,
+  MessageSquare,
   Wifi,
   ParkingCircle,
   Accessibility,
   CreditCard,
-  Instagram,
-  Phone,
-  Search,
-  Calendar,
-  Menu,
   Banknote,
   CreditCard as CardIcon,
-  MessageSquare,
 } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { Link } from "react-router-dom";
 import { AppointmentDialog } from "@/components/scheduling/AppointmentDialog";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { ServiceCard } from "@/components/scheduling/ServiceCard";
+import { Header } from "@/components/layout/Header";
+import { ImageCarousel } from "@/components/home/ImageCarousel";
+import { BusinessHours } from "@/components/home/BusinessHours";
+import { ServicesSection } from "@/components/home/ServicesSection";
 
 interface Service {
   id: string;
@@ -47,16 +29,6 @@ interface Service {
   active: boolean;
   created_at: string;
 }
-
-const businessHours = [
-  { day: "Segunda-Feira", hours: "08:00 - 19:00" },
-  { day: "Terça-Feira", hours: "08:00 - 19:00" },
-  { day: "Quarta-Feira", hours: "08:00 - 19:00" },
-  { day: "Quinta-Feira", hours: "08:00 - 19:00" },
-  { day: "Sexta-Feira", hours: "08:00 - 19:00" },
-  { day: "Sábado", hours: "08:00 - 17:00", special: true },
-  { day: "Domingo", hours: "Fechado" },
-];
 
 const amenities = [
   { icon: Wifi, label: "Wi-Fi Grátis", description: "Internet de alta velocidade disponível" },
@@ -75,22 +47,6 @@ const paymentMethods = [
 const Index = () => {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
 
-  const { data: services = [], isLoading: isLoadingServices } = useQuery({
-    queryKey: ["services"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("services")
-        .select("*")
-        .eq("active", true);
-
-      if (error) throw error;
-      return (data as Service[]).map(service => ({
-        ...service,
-        duration: String(service.duration).replace(/\s*minutes?\s*/i, " min")
-      }));
-    },
-  });
-
   const handleSchedule = (service: Service) => {
     setSelectedService(service);
   };
@@ -99,71 +55,10 @@ const Index = () => {
     setSelectedService(null);
   };
 
-  const images = [
-    "/lovable-uploads/4615e36b-7752-4181-8a3d-4464ce5271d1.png",
-    "/placeholder.svg",
-    "/placeholder.svg",
-  ];
-
   return (
     <div className="min-h-screen bg-barber">
-      <header className="sticky top-0 z-50 border-b border-barber-muted/20 bg-barber/95 backdrop-blur">
-        <div className="container py-4 flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <h1 className="text-2xl font-bold">Sr. Oliveira Barbearia</h1>
-            <nav className="hidden md:flex items-center gap-6">
-              <Link to="/" className="hover:text-barber-accent transition-colors">
-                Início
-              </Link>
-              <Link to="/search" className="hover:text-barber-accent transition-colors">
-                <Search className="h-4 w-4" />
-              </Link>
-              <Link to="/appointments" className="hover:text-barber-accent transition-colors">
-                <Calendar className="h-4 w-4" />
-              </Link>
-            </nav>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button variant="outline" className="md:hidden">
-              <Menu className="h-4 w-4" />
-            </Button>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="bg-barber-accent text-white">Entrar</Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Entrar na sua conta</DialogTitle>
-                  <DialogDescription>
-                    Faça login para agendar seus serviços
-                  </DialogDescription>
-                </DialogHeader>
-                {/* Login form will be added here */}
-              </DialogContent>
-            </Dialog>
-          </div>
-        </div>
-      </header>
-
-      <section className="relative">
-        <Carousel className="w-full max-w-5xl mx-auto">
-          <CarouselContent>
-            {images.map((image, index) => (
-              <CarouselItem key={index}>
-                <div className="h-[400px] relative">
-                  <img
-                    src={image}
-                    alt={`Barbearia ${index + 1}`}
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-      </section>
+      <Header />
+      <ImageCarousel />
 
       <section className="container py-8">
         <Card className="p-6 bg-secondary/50">
@@ -194,51 +89,10 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Services */}
-      <section className="container py-8">
-        <h2 className="text-xl font-semibold mb-4">Serviços</h2>
-        <div className="grid gap-4">
-          {isLoadingServices ? (
-            <Card className="p-4 bg-secondary/50">
-              <div className="flex items-center justify-center">
-                <span className="text-sm text-muted-foreground">
-                  Carregando serviços...
-                </span>
-              </div>
-            </Card>
-          ) : (
-            services.map((service) => (
-              <ServiceCard
-                key={service.id}
-                service={service}
-                onSchedule={handleSchedule}
-              />
-            ))
-          )}
-        </div>
-      </section>
+      <ServicesSection onSchedule={handleSchedule} />
 
       <section className="container py-8 grid md:grid-cols-2 gap-8">
-        <div>
-          <h2 className="text-xl font-semibold mb-4">Horário de atendimento</h2>
-          <Card className="p-4 bg-secondary/50">
-            {businessHours.map((schedule) => (
-              <div
-                key={schedule.day}
-                className="flex justify-between py-2 border-b border-barber-muted/20 last:border-0"
-              >
-                <span>{schedule.day}</span>
-                <span
-                  className={
-                    schedule.special ? "text-barber-success" : "text-barber-muted"
-                  }
-                >
-                  {schedule.hours}
-                </span>
-              </div>
-            ))}
-          </Card>
-        </div>
+        <BusinessHours />
 
         <div className="space-y-8">
           <div>
