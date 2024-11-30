@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/carousel";
 
 const images = [
-  "/lovable-uploads/4615e36b-7752-4181-8a3d-4464ce5271d1.png",
+  "/lovable-uploads/985f07d5-e3fe-4aee-8a16-c79bc695ba2c.png",
   "/placeholder.svg",
   "/placeholder.svg",
 ];
