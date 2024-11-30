@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ServiceCard } from "@/components/scheduling/ServiceCard";
+import { Scissors } from "lucide-react";
 
 interface Service {
   id: string;
@@ -28,7 +29,6 @@ export function ServicesSection({ onSchedule }: ServicesSectionProps) {
 
       if (error) throw error;
       
-      // Convert the array to a Set to remove duplicates based on ID
       const uniqueServices = Array.from(
         new Map((data as Service[]).map(item => [item.id, item])).values()
       );
@@ -41,13 +41,16 @@ export function ServicesSection({ onSchedule }: ServicesSectionProps) {
   });
 
   return (
-    <section className="container py-8">
-      <h2 className="text-xl font-semibold mb-4">Serviços</h2>
-      <div className="grid gap-4">
+    <section className="container py-12">
+      <div className="flex items-center gap-3 mb-8">
+        <Scissors className="h-6 w-6 text-barber-accent" />
+        <h2 className="text-2xl font-bold">Nossos Serviços</h2>
+      </div>
+      <div className="grid gap-4 animate-fade-in">
         {isLoadingServices ? (
-          <Card className="p-4 bg-secondary/50">
+          <Card className="p-6 glass-card">
             <div className="flex items-center justify-center">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-barber-muted">
                 Carregando serviços...
               </span>
             </div>

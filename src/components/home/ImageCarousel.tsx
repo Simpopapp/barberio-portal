@@ -14,23 +14,25 @@ const images = [
 
 export function ImageCarousel() {
   return (
-    <section className="relative">
-      <Carousel className="w-full max-w-5xl mx-auto">
+    <section className="relative py-8">
+      <div className="absolute inset-0 bg-gradient-to-b from-barber-dark/80 to-transparent pointer-events-none" />
+      <Carousel className="w-full max-w-6xl mx-auto">
         <CarouselContent>
           {images.map((image, index) => (
             <CarouselItem key={index}>
-              <div className="h-[400px] relative">
+              <div className="relative h-[500px] animate-fade-in">
                 <img
                   src={image}
                   alt={`Barbearia ${index + 1}`}
-                  className="w-full h-full object-cover rounded-lg"
+                  className="w-full h-full object-cover rounded-xl"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-barber-dark/80 to-transparent rounded-xl" />
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="left-4" />
+        <CarouselNext className="right-4" />
       </Carousel>
     </section>
   );
