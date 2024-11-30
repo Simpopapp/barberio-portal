@@ -34,6 +34,11 @@
   body {
     @apply bg-barber text-barber-foreground antialiased;
   }
+  
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 @layer components {
@@ -43,5 +48,21 @@
   
   .hover-scale {
     @apply transition-transform duration-200 hover:scale-105;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-white to-barber-accent bg-clip-text text-transparent;
+  }
+  
+  .glass-effect {
+    @apply bg-barber-card/40 backdrop-blur-md border border-white/10;
+  }
+  
+  .hover-glow {
+    @apply transition-all duration-300 hover:shadow-[0_0_15px_rgba(155,135,245,0.3)];
+  }
+  
+  .card-highlight {
+    @apply transition-colors duration-300 hover:bg-barber-highlight;
   }
 }

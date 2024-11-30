@@ -43,8 +43,11 @@ export function ServicesSection({ onSchedule }: ServicesSectionProps) {
   return (
     <section className="container py-12">
       <div className="flex items-center gap-3 mb-8">
-        <Scissors className="h-6 w-6 text-barber-accent" />
-        <h2 className="text-2xl font-bold">Nossos Serviços</h2>
+        <div className="relative">
+          <Scissors className="h-6 w-6 text-barber-accent animate-pulse" />
+          <div className="absolute inset-0 bg-barber-accent/20 blur-lg rounded-full" />
+        </div>
+        <h2 className="text-2xl font-bold gradient-text">Nossos Serviços</h2>
       </div>
       <div className="grid gap-4 animate-fade-in">
         {isLoadingServices ? (
